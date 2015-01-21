@@ -10,35 +10,56 @@ var cardTools = { // a toolbox object used to group related methods
 	// These functions are no longer global variables but instead
 	// properties (methods) of the toolbox object:
 	rank: function(id) {
-		var rankNumber = Math.round((id + 1) / 4); 
-		return rankNumber;
+		if (id > 51 || typeof(id) == 'string' || id < 0 || id%1 !== 0 || id == undefined) {
+		return NaN;
+	} else {
+	var rankNumber = Math.ceil((id + 1) / 4); //rank number is one more than array index since arrays start at 0 but ranks starts at 1
+	return rankNumber;
+		}
 	},
 
 	suit: function(id) {
-		var suitNumber = id % 4;
-		return suitNumber; 
-	},
+		if (id > 51 || typeof(id) == 'boolean' || id < 0 || id%1 !== 0) {
+		return NaN;
+	} else {
+	var suitNumber = (id % 4) + 1; //suit number is one more than array index
+	return suitNumber; 
+	} 
+},
 
 	cardID: function(cardRank,cardSuit) {
-			var cardNumber = (4 * cardRank) + cardSuit; //4 is number of columns
-			return cardNumber;
-
-	},
+			if(cardRank < 1 || typeof(cardRank) == 'string' ||  cardRank > 13 || cardRank % 1 !== 0 ) {
+		return NaN; 
+	} if (cardSuit > 4 || cardSuit % 1 !== 0) {	
+		return NaN;
+	} else {         
+	var cardNumber = (4 * (cardRank - 1)) + (cardSuit - 1); //4 is number of columns
+	return cardNumber;
+	}
+},
 
 	color: function(id) {
-	var cardColor = this.suit(this.color);
-	if (cardColor >= 0 && cardColor <= 1) {
-		cardColor = 'red';
-	} else if (cardColor >= 2 && cardColor <= 3) {
-		cardColor = 'black';
-	}
-	return cardColor;
+	if (typeof(cardID) == 'string' || cardID == true) {
+		return NaN;
+	} else {
+		var cardColor = suit(cardID);
+		if (cardColor >= 0 && cardColor <= 1) {
+			cardColor = 'red';
+		} else if (cardColor >= 2 && cardColor <= 3) {
+			cardColor = 'black';
+		}
+	}	return cardColor;
 },
 
 	name: function(id) {
-			var cardName = this.rank(id);
-			var cSuit = this.suit(id);
-			console.log(cardRank[cardName] + ' of ' + cardSuit[cSuit]);
+	if (id == false || id < 0 || id > 51 || id%1 !== 0) {  // id == NaN does not work because NaN cannot equal NaN
+		return NaN;
+	} else {
+		var cardName = rank(id);
+		var cSuit = suit(id);
+		var fullName = (cardRank[cardName - 1] + ' of ' + cardSuit[cSuit - 1]);
+		return fullName;
+	}
 }
 
 		//...
