@@ -39,10 +39,10 @@ var cardTools = { // a toolbox object used to group related methods
 },
 
 	color: function(id) {
-	if (typeof(cardID) == 'string' || cardID == true) {
+	if (typeof(this.cardID) == 'string' || this.cardID == true) {
 		return NaN;
 	} else {
-		var cardColor = suit(cardID);
+		var cardColor = this.suit(this.cardID);
 		if (cardColor >= 0 && cardColor <= 1) {
 			cardColor = 'red';
 		} else if (cardColor >= 2 && cardColor <= 3) {
@@ -55,8 +55,8 @@ var cardTools = { // a toolbox object used to group related methods
 	if (id == false || id < 0 || id > 51 || id%1 !== 0) {  // id == NaN does not work because NaN cannot equal NaN
 		return NaN;
 	} else {
-		var cardName = rank(id);
-		var cSuit = suit(id);
+		var cardName = this.rank(id);
+		var cSuit = this.suit(id);
 		var fullName = (cardRank[cardName - 1] + ' of ' + cardSuit[cSuit - 1]);
 		return fullName;
 	}
