@@ -1,14 +1,18 @@
-var cardTools = { // a toolbox object used to group related methods
-//  ^^^^^^^^^could be called anything
+var rankNames = ['','Ace','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
+                'Jack','Queen','King'];
+var suitNames = ['','Hearts','Diamonds','Spade','Clubs'];
 
-	// These functions are no longer global variables but instead
-	// properties (methods) of the toolbox object:
+
+
+
+
+var cardTools = { 
 	rank: function(card) {
 		return Math.floor(card/4)+1;
 	},
 
 	suit: function(card) {
-		var result = Math.floor(card/4) + 1;
+		var result = (card%4) + 1;
         return result;
 	},
 
@@ -17,25 +21,51 @@ var cardTools = { // a toolbox object used to group related methods
 	},
 
 	color: function(card) {
-		return (suit(card) < 3)? "red": "black";
+		return (this.suit(card) < 3)? "red": "black";
 	},
 
 	name: function(card) {
 			return rankNames[this.rank(card)]+' of '+suitNames[this.suit(card)];
 		// uses `this.rank()` and `this.suit()` to call the rank and suit methods above
-	}
-
-	// possibly other methods and properties, if needed, including...
-	// a validation function?
-	//Some arrays
+	},
 
 
 }; // end cardTools definition
 
-	var rankNames = ['','Ace','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
-                'Jack','Queen','King'];
-	var suitNames = ['','Hearts','Diamonds','Spade','Clubs'];
 
+//Seconde Version 
+var cardTools = { 
+	rank: function(card) {
+		return Math.floor(card/4)+1;
+	},
+
+	suit: function(card) {
+		var result = (card%4) + 1;
+        return result;
+	},
+
+	cardID: function(rank,suit) {
+		return (rank-1)*4 + (suit-1);
+	},
+
+	color: function(card) {
+		return (this.suit(card) < 3)? "red": "black";
+	},
+
+	name: function(card) {
+			return this.rankObjArr.rankNames[this.rank(card)]+' of '+ this.suitObjArr.suitNames[this.suit(card)];
+		// uses `this.rank()` and `this.suit()` to call the rank and suit methods above
+	},
+	
+	rankObjArr: {rankNames:['','Ace','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
+                'Jack','Queen','King']},
+
+	suitObjArr: {suitNames:['','Hearts','Diamonds','Spade','Clubs']}
+
+}; // end cardTools definition
+
+
+/*
 
 // ==== TESTING =====
 
@@ -143,3 +173,6 @@ assert 		(Number.isNaN(cardTools.name(52)),      "Test 45 failed");
 expectNaN	(cardTools.name(52), "name(52)");
 assert 		(Number.isNaN(cardTools.name(NaN)),     "Test 46 failed");
 expectNaN	(cardTools.name(NaN), "name(NaN)");
+
+
+*/
