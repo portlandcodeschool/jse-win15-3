@@ -39,10 +39,10 @@ var cardTools = { // a toolbox object used to group related methods
 },
 
 	color: function(id) {
-	if (typeof(this.cardID) == 'string' || this.cardID == true) {
+	if (typeof(id) == 'string' || id == true) {
 		return NaN;
 	} else {
-		var cardColor = this.suit(this.cardID);
+		var cardColor = this.suit(id);
 		if (cardColor >= 0 && cardColor <= 1) {
 			cardColor = 'red';
 		} else if (cardColor >= 2 && cardColor <= 3) {
