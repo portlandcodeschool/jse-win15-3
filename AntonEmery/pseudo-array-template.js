@@ -2,14 +2,30 @@ var array = {length:0,  // element properties will be added as needed
 
 pop: function() { //changes array, returns ??
 	//remove last item in the object, return modified length
+	delete this[this.length-1];
+	this.length = this.length -1;
+	return this.length;
 },
 
-push: function(/*...*/) { //changes array, returns a number
-	//...
+push: function(x) { //changes array, returns a number
+	this[this.length] = x;//...
+	this.length = this.length + 1;
+	return array.length;
 },
 
-join: function(/*...*/) { //returns a string
-	//...
+join: function(z) { //returns a string
+		var answer;
+		
+	for(var i = this.length; i > 0; i--){
+			answer = this[i-1];
+			answer = answer + z;
+			
+	}	
+	return answer;
 },
 
 };
+
+array.push('gilbert');
+array.push('gary');
+array.push('turbo');
