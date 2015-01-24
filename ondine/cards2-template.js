@@ -1,18 +1,18 @@
 var cardTools = {
 
-	rank: function(card) {
+	rank: function(card) {  // 1 ... 13
     if(this.isValid(card,0,51)) {
       return Math.floor(card/4) + 1;
     }
 	},
 
-	suit: function(card) {
+	suit: function(card) {  // 1 ... 4
 		if(this.isValid(card,0,51)) {
       return ((card%4) + 1);
     }
 	},
 
-	cardID: function(rank,suit) {
+	cardID: function(rank,suit) {  // 0 ... 51
 		if (this.isValid(rank, 1, 13) &&
     this.isValid(suit, 1, 4)) {
       return (4 * (rank - 1) + (suit - 1));
@@ -20,40 +20,40 @@ var cardTools = {
 	},
 
 	color: function(card) {
-    suitColor = this.suit(card) < 3 ? "red": "black";
-    return suitColor;
+    var suitColor = this.suit(card);
+    return suitColor && ((suitColor < 3) ? "red": "black");
 	},
 
 	name: function(card) {
-		var cardRank = this.rank(card);
-    var cardSuit = this.suit(card);
     var rankName = ["", "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"];
     var suitName = ["", "Hearts", "Diamonds", "Spades", "Clubs"];
-    var cardName = (cardRank && cardSuit && 
-    rankName[cardRank]) + " of " + suitName[cardSuit];
-    return cardName;
+    var cardRank = this.rank(card);
+    var cardSuit = this.suit(card); // doesn't this check isValid already?
+    if (cardRank && cardSuit) { // so is this necessary?
+    return (rankName[cardRank] + " of " + suitName[cardSuit]);
+    }
 	},
 
   isValid: function(num, low, high) {
     if ((typeof num) != "number") {
       return NaN;
     }
-    if (num%1 !== 0) {
+    if ((num%1) !== 0) {
       return NaN;
     }
     if (num < low || num > high) {
       return NaN;
     }
     return true;
-  },
-
-};
+  }
+ 
+}
 
 
 // ==== TESTING =====
 
-// good old-fashined assert:
-function assert(claim,message) {
+// good old-fashioned assert:
+function assert(claim, message) {
     if (!claim) console.error(message);
 }
 
