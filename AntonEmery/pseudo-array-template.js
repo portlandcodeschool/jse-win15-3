@@ -14,13 +14,11 @@ push: function(x) { //changes array, returns a number
 },
 
 join: function(z) { //returns a string
-		var answer;
+		var answer = '';
 		
 	for(var i = this.length; i > 0; i--){
-			answer = this[i-1];
-			answer = answer + z;
-			
-	}	
+			answer = answer + this[i-1] + z;
+			}	
 	return answer;
 },
 
