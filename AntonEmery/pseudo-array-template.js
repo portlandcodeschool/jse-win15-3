@@ -19,7 +19,10 @@ join: function(z) { //returns a string
 	for(var i = this.length; i > 0; i--){
 			answer = answer + this[i-1] + z;
 			}	
-	return answer;
+	var joined = answer.substring(0, answer.length-1);
+	return joined;
+	
+
 },
 
 };
