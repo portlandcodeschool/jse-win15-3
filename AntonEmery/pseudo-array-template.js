@@ -19,7 +19,7 @@ join: function(z) { //returns a string
 	for(var i = this.length; i > 0; i--){
 			answer = answer + this[i-1] + z;
 			}	
-	var joined = answer.substring(0, answer.length-1);
+	var joined = answer.substring(0, answer.length-1);  //chops off the last character in the string and returns the rest of it
 	return joined;
 	
 
