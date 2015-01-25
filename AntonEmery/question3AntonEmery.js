@@ -20,11 +20,20 @@ function equal(objA, objB) {
 }
 
 function similar(objA, objB) {
+	if(Object.keys(objA).length !== Object.keys(objB).length){
+		return false;
+	}
+	for(var key in objA) {
+		if (!(key in objB)) {
+			return false;
+		} else {
+			return true;
+			}
+		}
 	
-	
-}
+};
 
-// Psuedo Code for function similar
+/* Psuedo Code for function similar
 see if the two objects are the same length
 	if yes continue
 	if no return false
@@ -33,6 +42,17 @@ ask whether the key is also in B
 	if no return false
 	if yes keep going
 return true
+*/
+
+/* less psuedo
+ if (Object.keys(objA).length !== Object.keys(objB).length)
+ 	return false
+ loop over each property of A  
+ 	if !(key in objB)
+ 		return false
+*/
+ 	
+ 
 
 /*3b*/
 
