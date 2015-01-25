@@ -18,7 +18,7 @@ join: function(z) { //returns a string
 		
 	for(var i = this.length; i > 0; i--){
 			if (i - 1 == 0) {
-				answer = answer + this[i-1];
+ 				answer = answer + this[i-1];
 			} else {
 			answer = answer + this[i-1] + z;
 				}
