@@ -17,13 +17,13 @@ join: function(z) { //returns a string
 		var answer = '';
 		
 	for(var i = this.length; i > 0; i--){
+			if (i - 1 == 0) {
+				answer = answer + this[i-1];
+			} else {
 			answer = answer + this[i-1] + z;
-			}	
-	var joined = answer.substring(0, answer.length-1);  //chops off the last character in the string and returns the rest of it
-	return joined;
-	
-
-},
+				}
+			}	return answer;
+	},
 
 };
 
