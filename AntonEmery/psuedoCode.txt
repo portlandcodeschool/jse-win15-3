@@ -1,0 +1,52 @@
+/* Psuedo Code for function similar
+see if the two objects are the same length
+	if yes continue
+	if no return false
+loop grab each key in object obj A 
+ask whether the key is also in B 
+	if no return false
+	if yes keep going
+return true
+*/
+
+/* less psuedo
+ if (Object.keys(objA).length !== Object.keys(objB).length)
+ 	return false
+ loop over each property of A  
+ 	if !(key in objB)
+ 		return false
+*/
+ 	
+ 
+/* Psuedo Code for function equal */
+
+see if two objects are the same length
+	if yes continue
+	if no return false
+loop thru each key and value in A
+	If A's key' value is not in B
+	return false
+	if yes keep going
+			return true
+
+for(var key in objA)
+if (!(key)in objB))
+	return false;
+if (a[key] !== b[key])
+	return false
+else return true
+
+//Intersection
+
+make result object
+
+find shorter object of A and B 
+
+
+loop over shorter sets of keys... {
+if the key is NOT in both
+	ignore it 
+else 
+	include in result with value (A[key] && B[key])
+}	
+
