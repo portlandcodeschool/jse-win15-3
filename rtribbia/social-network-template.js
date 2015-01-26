@@ -33,7 +33,7 @@ people.haveMet = function(nameA,nameB) { //returns a number or falsish
 people.friendsOf = function(name) { //returns a string
 	//...
 	if (this.exists(name)) {
-		var arr = Object.keys(this.index[name]['friends']);
+		var arr = Object.keys(this.index[name]['friends']); //Will always have len >= 1 right? We only create names in people.meet
 		arr.sort();
 		return arr.join(', ');
 	} else  {
@@ -42,10 +42,26 @@ people.friendsOf = function(name) { //returns a string
 }
 
 people.friendsOfFriendsOf = function(name) {
+	if (this.exists(name)) {
+		var friends = this.friendsOf(name).split(', ');  //friends of name
+		var output_arr = friends.slice(0); //copy array- Thanks, stackoverflow!
 
-	
+		for (var i = 0; i < friends.length; i++) {
+			var f_friends = this.friendsOf(friends[i]).split(', '); //friends of friends[i] of name
+			for (var j = 0; j < f_friends.length; j++) {
+				if ((output_arr.indexOf(f_friends[j]) == -1) && (f_friends[j] != name)) { output_arr.push(f_friends[j]); } //Add friend to list if it != original name and isn't already on the list.
+			}
+		}
+		output_arr.sort();
+		return output_arr.join(', ');
+	} else {
+		return undefined;
+	}
 }
 
 people.create = function(name) { this.index[name] = {name: name, friends: {}}; }
 people.exists = function(name) { return (name in this.index); }
+
+
+
 
