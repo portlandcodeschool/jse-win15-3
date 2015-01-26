@@ -1,7 +1,7 @@
 1. See cards2-template.js
 
 2.A. See array-test-template.js
-2.B. See pseudo-array-template.js 
+  B.&C. See pseudo-array-template.js 
 
 3.A. function copy(obj) {
 		var iso = (typeof obj == 'object');
