@@ -27,6 +27,9 @@ It would be best to modify your own code from Homework 2, but if you didn't solv
 **2)  Testing and Simulating Arrays** _[Moderate, 20%]_
 
 **a)**
+
+Answer in: array-test-template.js
+
 Write some code to verify that Arrays behave as advertised.  Specifically, write three different functions, each testing one method of Arrays:
 
 * `testPush(array)` should verify that `array.push(val)` adds _val_ to the end of _array_ and returns its new length;
