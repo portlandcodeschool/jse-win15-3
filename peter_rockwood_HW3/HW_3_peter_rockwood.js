@@ -563,12 +563,12 @@ people.friendsOf = function(name) { //returns a string
 	return (frens.sort()).join()
 }
 
-**b)** _[Difficult, 15%]_
+// **b)** _[Difficult, 15%]_
 
-Write another method `people.friendsOfFriendsOf(name)` which returns a string listing, in alphabetical order, all the names of people within two degrees of separation from `name`: they've met either `name` or at least one of `name`'s friends.
-Your list may include `name` itself but no duplicates: any person should be listed only once regardless of the number of connections with `name`.
+// Write another method `people.friendsOfFriendsOf(name)` which returns a string listing, in alphabetical order, all the names of people within two degrees of separation from `name`: they've met either `name` or at least one of `name`'s friends.
+// Your list may include `name` itself but no duplicates: any person should be listed only once regardless of the number of connections with `name`.
 
-(_Hint:_ the union of sets includes no duplicates!  Perhaps you could recycle code from somewhere?)
+// (_Hint:_ the union of sets includes no duplicates!  Perhaps you could recycle code from somewhere?)
 
 people.friendsOfFriendsOf = function(name){
 	var allFrens = {};	//empty object to store all the friends
