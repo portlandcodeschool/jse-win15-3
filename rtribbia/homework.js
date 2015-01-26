@@ -122,7 +122,7 @@
 	expectValue(subtract(objB,objA), {c:0}, 'subtract(objB,objA)');
 	expectValue(subtract(objC,objA), {c:4}, 'subtract(objC,objA)');
 
-	//3.D.-------------------
+	//3.D. I imagine it will have something to do with the || (in union) and && (in intersection) being used to determine matchking key's values. Short circuiting from last week. 
 
 
 	//4. See social-network-template.js
