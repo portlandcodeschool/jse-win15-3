@@ -14,8 +14,6 @@
 // but `equal(union(A,B),union(B,A))` may not be.  Likewise with intersection.  Explain!
 
 
-var myObject = {"Greg", "Ondine", "Tal", "Todd"};
-
 //**3)  Object Comparison** _[Moderate, 30%]_
 
 // **a)**
@@ -82,63 +80,13 @@ var similar = function(obj1, obj2) {
 // For example: the union of `{a:1,b:0}` and `{a:0,c:0}` is `{a:1,b:0,c:0}`.
 var union = function(obj1,obj2){
 	// iterate and compare building the new object
-	objMergeTarget
+	var objUnionTemp = {}; // temp var for holding the result
 
-	// rather than iterating.
-	// just pile it up and remove the dups
+	objUnionTemp += subtract(obj1,obj2);
+	objUnionTemp += subtract(obj2,obj1);
+	objUnionTemp += intersect(obj1,obj2);
 
-	objMergeTarget = obj1 + obj2;
-
-	//create string arrays of the props just merged
-	//then delete the props from the merged objects
-	propStrMerged  	= Object.keys(propStrMerged);
-	propStrObj1		= Object.keys(propStrObj1);
-	propStrObj2		= Object.keys(propStrObj2);
-
-//TODO - REVIEW This approach, there has to be a simpler way --- DRAW a picture
-
-//?????  Can we build the union out of the subtract and intersect?
-// intersect is middle third
-// subtract A - B is first third
-// subtract B - A is the last third
-
-   //ABANDONDED APPROACH  for (var i in obj1) {
-   //ABANDONDED APPROACH  	var toMerge = false;
-   //ABANDONDED APPROACH  	for (var j in obj2){
-   //ABANDONDED APPROACH  		if (obj1[i] == obj2[j]) { // IN obj1 but NOT obj2
-   //ABANDONDED APPROACH          	toMerge = false;
-   //ABANDONDED APPROACH  	};
-   //ABANDONDED APPROACH  	if (toMerge) { 
-   //ABANDONDED APPROACH  		objMergeTarget += obj[i]
-   //ABANDONDED APPROACH  	}
-
-   //ABANDONDED APPROACH  };
-
-   //ABANDONDED APPROACH  for (var i in obj1) {
-   //ABANDONDED APPROACH      for (var j in obj2){ 
-
-   //ABANDONDED APPROACH      if (obj2[i] == obj1[i]) { // shares a key in BOTH obj1 and obj2
-   //ABANDONDED APPROACH          objMergeTarget += obj1[i];
-   //ABANDONDED APPROACH      };
-   //ABANDONDED APPROACH          	found = true;
-   //ABANDONDED APPROACH  	};
-   //ABANDONDED APPROACH  	if (found) { 
-   //ABANDONDED APPROACH  		objMergeTarget += obj[i]
-   //ABANDONDED APPROACH  	}
-   //ABANDONDED APPROACH  };
-
-   //ABANDONDED APPROACH  for (var i in obj2) {
-   //ABANDONDED APPROACH  	for (var j in obj2){
-   //ABANDONDED APPROACH      if (obj2[i] != obj1[i]) { // IN obj2 but NOT in obj1
-   //ABANDONDED APPROACH          objMergeTarget += obj1[i];
-   //ABANDONDED APPROACH      };
-   //ABANDONDED APPROACH          	found = true;
-   //ABANDONDED APPROACH  	};
-   //ABANDONDED APPROACH  	if (found) { 
-   //ABANDONDED APPROACH  		objMergeTarget += obj[i]
-   //ABANDONDED APPROACH  	}
-   //ABANDONDED APPROACH };
-   return objMergeTarget;
+   	return objUnionTemp;
 };
 
 
@@ -150,15 +98,16 @@ var intersect = function(objA,objB){
 	var objMergeTarget = {};
 	for (var i in objA) {
      	var found = false;
-     	for (var j in obj2){
-     		if (obj1[i] == obj2[j]) { // found in both
+     	for (var j in objB){
+     		if (objA[i] == objB[j]) { // found in both
              	found = true;
-     	};
-     	if (found) { 
-     		objMergeTarget += obj[i]
-     	}
-     };
+	     	};
+	     	if (found) { 
+	     		objMergeTarget += objA[i];
+	     	};
+	     }
      return objMergeTarget;
+	};
 };
 
 
@@ -170,23 +119,35 @@ var subtract = function(objA,objB){
 
 	for (var i in objA) {
      	var inTarget = true;
-     	for (var j in obj2){
-     		if (obj1[i] == obj2[j]) { // IN objA and objB so don't add it to the Target
+     	for (var j in objB){
+     		if (objA[i] == objB[j]) { // IN objA and objB so don't add it to the Target
              	inTarget = false;
-     	};
-     	if (inTarget) { 
-     		objMergeTarget += obj[i]
-     	}
-     };
-     return objMergeTarget;
-
-
+	     	};
+	     	if (inTarget) { 
+	     		objMergeTarget += objA[i];  //TODO check this logic
+     		};
+     
+		};
+	};
+	return objMergeTarget;
 };
 
 
 // Tests
 
-var myTestObject1 = {"Larry", "Moe", "Kurly", "Greg"};
+var myTestObject1 = {'Larry':'Larry'
+					,'Greg':'Greg'
+					,'Moe':'Moe'
+					,'John':'John'
+					,'Kurly':'Kurly'};
+
+var myTestObject2 = {'Larry':'Larry'
+					,'Greg':'Greg'
+					,'Moe':'Moe'
+					,'Jack':'Jack'
+					,'Joe':'Joe'};
+
+
 var myObjectCopy = {};
 
 myObjectCopy = copy(myTestObject1);
@@ -199,7 +160,7 @@ console.log("should fail" + equalityTest);
 var equalityTest = equal(myTestObject1,myObjectCopy);
 console.log("should pass" + equalityTest);
 
-var similarityTest = myTestObject;
+var similarityTest = myTestObject1;
 var similarityTest = similar(myTestObject1,myObjectCopy);
 console.log("should pass" + similarityTest);
 
@@ -207,16 +168,13 @@ var similarityTest = {};
 var similarityTest = similar(myTestObject1,myObjectCopy);
 console.log("should fail" + similarityTest);
 
-// TODO more tests
+myObjectCopy = union(myTestObject1, myTestObject2);
 
+// TODO more tests
 
 // **c)**
 // Write three sample assertions to test each of your three merging functions (9 total).
 // Remember that when comparing your results to the expected results, you'll need to see if objects are equal() but not identical.
-
-
-
-
 
 
 // **d)**
