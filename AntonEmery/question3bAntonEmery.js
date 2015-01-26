@@ -1,28 +1,25 @@
-var objectA = {a:1, b:2, c:4};
-var objectB = {a:1, b:3, c:5};
+var objectA = {b:2, c:4, d: 1};
+var objectB = {a:1, c:0, d:'narf'};
 
 function intersection(a, b) {
 
 var result = {};
 
-var lengthA = Object.keys(objectA).length;
-var lengthB = Object.keys(objectB).length;
+var lengthA = Object.keys(a).length;
+var lengthB = Object.keys(b).length;
 
 var shortObj = (lengthA < lengthB) ? a : b;
-if (lengthA < lengthB) {
- //use A as shorter
-}
 
- //loop over shorters keys
- 	for(var key in objectA) {
+//loop over shorters keys
+ 	for(var key in a) {
  		//if key is in both then --> if key ALSO in B
-		if (key in objectB) {
-			obj[key] = (a[key] && b[key]);
+		if (key in b) {
+			result[key] = (a[key] && b[key]);
 		}
 		//else ignore
-	}
+	} return result;
 		
-}	//end if A shorter
+
 	
 
 
