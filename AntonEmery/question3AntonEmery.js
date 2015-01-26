@@ -16,8 +16,19 @@ var objectB = {a:1, b:3, c:5};
 						
 
 function equal(objA, objB) {
-
+	if(Object.keys(objA).length !== Object.keys(objB).length) {
+		return false;
+	}
+	for(var key in objA) {
+		if (!(key in objB)) {
+			return false;
+		}
+	} if(objA[key] !== objB[key]) {
+		return false;
+	}
+	return true;
 }
+
 
 function similar(objA, objB) {
 	if(Object.keys(objA).length !== Object.keys(objB).length){
@@ -26,34 +37,9 @@ function similar(objA, objB) {
 	for(var key in objA) {
 		if (!(key in objB)) {
 			return false;
-		} else {
-			return true;
-			}
-		}
-	
+		} 
+	}	return true;
 };
 
-/* Psuedo Code for function similar
-see if the two objects are the same length
-	if yes continue
-	if no return false
-loop grab each key in object obj A 
-ask whether the key is also in B 
-	if no return false
-	if yes keep going
-return true
-*/
-
-/* less psuedo
- if (Object.keys(objA).length !== Object.keys(objB).length)
- 	return false
- loop over each property of A  
- 	if !(key in objB)
- 		return false
-*/
- 	
- 
-
-/*3b*/
 
 
