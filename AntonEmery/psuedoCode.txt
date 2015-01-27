@@ -41,6 +41,7 @@ else return true
 make result object
 
 find shorter object of A and B 
+	compare the length of a and b
 
 
 loop over shorter sets of keys... {
