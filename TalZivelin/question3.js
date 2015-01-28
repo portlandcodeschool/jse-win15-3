@@ -26,7 +26,7 @@ function equal(objA,objB)	{
 
 equal()
 
-//3a.03
+//3a.03 SIMILAR
 
 var objA = {a:1, b:2, c:3}
 var objB = {a:0, b:1, d:2};
@@ -50,7 +50,7 @@ for(var key in objA)	{
 similar(objA,objB);
 
 
-//3b.01
+//3b.01 UNION
 var ojb = {};
 var objA = {a:1, b:2, c:3, d:5}
 var objB = {a:0, b:1, d:2};
@@ -58,23 +58,23 @@ var objB = {a:0, b:1, d:2};
 function union(objA,objB){
 	
 	if (Object.keys(objA).length < Object.keys(objB).length){
-		for(var key in objA)	{
-			if(!(key in objB))	{
-				ojb[key] = objA[key];
+		for(var key in objB)	{
+			if(!(key in objA))	{
+				ojb[key] = objB[key];
 			}
 			else{				
-        		ojb[key] = (objA[key] || objB[key]);
+        		ojb[key] = (objB[key] || objA[key]);
 			}
 		}
 	}
 	
-	if (Object.keys(objA).length > Object.keys(objB).length){
-		for(var key in objB)	{
-			if(!(key in objA))	{
-        		ojb[key] = objB[key];				
+	if (Object.keys(objA).length >= Object.keys(objB).length){
+		for(var key in objA)	{
+			if(!(key in objB))	{
+        		ojb[key] = objA[key];				
 			}
       else{
-				ojb[key] = (objB[key] || objA[key]);
+				ojb[key] = (objA[key] || objB[key]);
 			}
 		}
 	}
@@ -82,7 +82,7 @@ function union(objA,objB){
 }
 union(objA,objB);
 
-//3b.02
+//3b.02  INTERSECTION
 var ojb = {};
 var objA = {a:1, b:2, c:3, d:5}
 var objB = {a:0, b:1, d:2};
@@ -106,9 +106,32 @@ function intersect(objA,objB){
 	}
 	return ojb
 }
-
 intersect(objA,objB);
+
+//3b.03  SUBTRACTION
+
+var ojb = {};
+var objA = {a:1, b:2, c:3, d:5}
+var objB = {a:0, b:1, d:2, e:9, g:5};
 
 function subtract(objA,objB){
 	
+	if (Object.keys(objA).length <= Object.keys(objB).length){
+		for(var key in objB)	{
+			if(!(key in objA))	{
+				ojb[key] = objB[key];
+			}
+		}
+	}
+	
+	if (Object.keys(objA).length >= Object.keys(objB).length){
+		for(var key in objA)	{
+			if(!(key in objB))	{
+        		ojb[key] = objA[key];				
+			}
+		}
+	}
+	return ojb
 }
+
+subtract(objA,objB)
