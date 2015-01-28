@@ -85,10 +85,12 @@ function testJoin(array) {
 	expectValue(array.length, 1, "array.length");
 
 	// 3) push 'b', then join and check as before
-	//...
-
+	expectValue(array.push('b'), 2, "array.push('a')");
+	expectValue(array[1], 'b', 1, "array.push[1]");
+	expectValue(array.length, 2, "array.length");
 	// 4) push 'c', then join and check as before
-	//...
+	expectValue(array.push('c'), 3, "array.push('c')");
+	
 
 	// 5) leave array unchanged, but join it with a different delimiter and check outcome
 	//...
