@@ -86,14 +86,15 @@ function testJoin(array) {
 
 	// 3) push 'b', then join and check as before
 	expectValue(array.push('b'), 2, "array.push('a')");
-	expectValue(array[1], 'b', 1, "array.push[1]");
+	expectValue(array[1], 1, "array[1]");
 	expectValue(array.length, 2, "array.length");
 	// 4) push 'c', then join and check as before
-	expectValue(array.push('c'), 3, "array.push('c')");
-	
+	expectValue(array.push('c');
+	expectValue(array[3], 'c', "array[3]"); 
+	expectValue(array.length, 3, "array.length");
 
 	// 5) leave array unchanged, but join it with a different delimiter and check outcome
-	//...
+	expectValue(array.join(''), '', "array.join('')");
 
 	// 6) leave array unchanged, but join() it with no delimiter argument, and check that it
 	//   uses the default delimiter ',' correctly
