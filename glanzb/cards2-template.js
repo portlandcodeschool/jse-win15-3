@@ -2,9 +2,9 @@
 
 // var validId = function(id) {
 //     if (typeof id === "number" && id !== NaN && id%1 === 0 && id >= 0 && id <= 51 ){
-//       console.log("valid id")
+//       console.log("valid id");
 //     } else {
-//       console.log ("Not valid id")
+//       console.log ("Not valid id");
 //     }
 // };
 
@@ -12,26 +12,25 @@ var cardTools = { // a toolbox object used to group related methods
 	// These functions are no longer global variables but instead
 	// properties (methods) of the toolbox object:
 	
-	validId: function(id) {
-    if (typeof this.id === "number" && this.id !== NaN && this.id%1 === 0 && this.id >= 0 && this.id <= 51 ){
-      	
+						
 					 rank:  function(id) {
-							return Math.floor(this.id/4)+1;
+							return this.validNum(id,0,51) && Math.floor(id/4)+1;
 						},
 
 						suit: function(id) {
-							return (this.id%4) + 1;
+							return this.validNum(id,0,51) && (id%4) + 1;
 						},
 
 						cardID: function(rank,suit) {
-							return (this.rank-1)*4 + (this.suit-1);
+							return this.validNum(rank,1,13) && this.validNum(suit,1,4) &&
+							((rank-1)*4 + (suit-1));
 						},
 
 						color: function(id) {
 							if (this.suit(id) == 1 || this.suit(id) ==2){
-							return "red"
+							return "red";
 							} else {
-							return "black"
+							return "black";
 							} 
 						},
 
@@ -39,16 +38,23 @@ var cardTools = { // a toolbox object used to group related methods
 								var rankNames = ['','Ace','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
                 'Jack','Queen','King'];
 								var suitNames = ['','Hearts','Diamonds','Spade','Clubs'];
-								var rankName = this.rankNames[this.rank(id)],
-										suitName = this.suitnames[this.suit(id)],
-										fullName = this.rankName + " of " this.suitName;
-								return this.fullName;
-						}
-			} else {
-      console.log ("Not valid id")
-    	}
-	}	
+								var rankName = rankNames[this.rank(id)],
+										suitName = suitNames[this.suit(id)],
+										fullName = rankName + " of " + suitName;
+								return fullName;
+						},
+							validNum : function(num,low,high) {
+    						if ((typeof num)!="number") 
+            				return NaN;
+        				if (!Number.isInteger(num)) //non-integer
+            				return NaN;
+        				if (num<low || num>high) //out of range; 0-51, 1-13, 1-4
+            			return NaN;
+        				return true;
+    				},
+
 };
+
 
 	// possibly other methods and properties, if needed, including...
 	// a validation function?
@@ -88,7 +94,7 @@ expectValue	(cardTools.rank(3),  1,		"rank(3)");
 assert 		(cardTools.rank(51)===13,	"Test 3 failed");
 expectValue	(cardTools.rank(51),  13,	"rank(51)");
 
-assert 		(cardTools.suit(0)===1,		"Test 4 failed");
+assert 		(cardTools.suit(0)===1,		"Test 4 failed");s
 expectValue	(cardTools.suit(0),  1,		"suit(0)");
 assert 		(cardTools.suit(5)===2,		"Test 5 failed");
 expectValue	(cardTools.suit(5),  2,		"suit(5)");
@@ -165,7 +171,3 @@ assert 		(Number.isNaN(cardTools.name(52)),      "Test 45 failed");
 expectNaN	(cardTools.name(52), "name(52)");
 assert 		(Number.isNaN(cardTools.name(NaN)),     "Test 46 failed");
 expectNaN	(cardTools.name(NaN), "name(NaN)");
-/*
-Exception: cardTools.name is not a function
-@Scratchpad/9:47:11
-*/
