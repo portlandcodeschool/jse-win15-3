@@ -35,7 +35,7 @@ var cardTools = {
 	},
 
   isValid: function(num, low, high) {
-    if ((typeof num) != "number") {
+    if ((typeof num) !== "number") {
       return NaN;
     }
     if ((num%1) !== 0) {
@@ -47,7 +47,7 @@ var cardTools = {
     return true;
   }
  
-}
+};
 
 
 // ==== TESTING =====
