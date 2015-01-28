@@ -214,18 +214,18 @@ genericArray.push("alice");
 genericArray.push("fred");
 genericArray.push("willingham");
 
-	expectValue(genericArray.join('_'), "", "array.join(\'_\')");
+	expectValue(genericArray.join('_'), "", "genericArray.join(\'_\')");
 
-	expectValue(genericArray.push('a'), 1, "array.push(\'a\')");
-	expectValue(genericArray.join('_'), "a", "array.join(\"_\")");
-	expectValue(genericArray.push('b'), 2, "array.push(\'b\')");
-	expectValue(genericArray.join('_'), "a_b", "array.join(\"_\")");
-	expectValue(genericArray.push('c'), 3, "array.push(\'c\')");
-	expectValue(genericArray.join('_'), "a_b_c", "array.join(\'_\')");
+	expectValue(genericArray.push('a'), 1, "genericArray.push(\'a\')");
+	expectValue(genericArray.join('_'), "a", "genericArray.join(\"_\")");
+	expectValue(genericArray.push('b'), 2, "genericArray.push(\'b\')");
+	expectValue(genericArray.join('_'), "a_b", "genericArray.join(\"_\")");
+	expectValue(genericArray.push('c'), 3, "genericArray.push(\'c\')");
+	expectValue(genericArray.join('_'), "a_b_c", "genericArray.join(\'_\')");
 
-	expectValue(genericArray.join('*'), "a*b*c", "array.join(\"*\")");
+	expectValue(genericArray.join('*'), "a*b*c", "genericArray.join(\"*\")");
 
-	expectValue(genericArray.join(), "a,b,c", "array.join()");
+	expectValue(genericArray.join(), "a,b,c", "genericArray.join()");
 
 // Question 3 Object Comparison
 
@@ -300,9 +300,8 @@ var difference = {}
 var union = function(objA, objB) {
 	together = {};
 	for (key in objA || key in objB)
-		(together[key] = objA[key]) || (together[key] = objB[key]);
-			return together;
-
+		together[(together[key] = objA[key]) || (together[key] = objB[key])];
+	return together;
 }
 
 var intersection = function(objA, objB) {
@@ -323,7 +322,65 @@ var subtract = function(objA, objB) {
 
 //c Sample Tests
 
+
+function assert(claim,message) {
+    if (!claim) console.error(message);
+}
+function expectValue(result, expected, attemptStr) {
+	if (result !== expected) {
+		console.log(attemptStr+" expected result "+expected+", got "+result);
+	}
+}
+function expectNaN(result, attemptStr) {
+	if (!Number.isNaN(result)) {
+		console.log(attemptStr+" expected NaN, got "+result);
+	}
+}
+
+function assert(claim, message) {
+	if (!claim) console.error(message);
+}
+
+function expectValue(result, expected, attemptStr) {
+	if (result !== expected) {
+		console.log(attemptStr+" expected result "+expected+", got "+result);
+	}
+}
+
+expectValue(union(one, two), 'Object {a:1, b:2, c:3, d:4, e: 5}', 'union(one, two)');
+expectValue(union("A", "B"), undefined, 'union(one, two)');
+
+
+
+
+
+
+
 //d Explanations
 
+
 //4 Social Network
+
+var people = {}
+
+people.index = {}
+
+people.meet = function(nameA, nameB){
+	people.index[nameA] = {name: nameA, friends: nameB};
+	
+
+
+
+
+	//people.nameA["met"+nameB] = 1;
+	//add to object
+	people.index[nameB] = {name: nameA, friends: nameA};
+	//add to object
+}
+
+people.haveMet(nameA, nameB)
+
+people.friendsOf(name)
+
+
 
