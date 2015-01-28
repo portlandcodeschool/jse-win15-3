@@ -49,13 +49,19 @@ function testPop(array) {
 	
 
 	// 2) pop once, then check the return value, array contents, and array length
-	//...
+	expectValue(array.pop(), 'b', "array.pop()");
+	expectValue(array[0], 'a', "array[0]"); //should remain 'a'
+	//expectValue(array[1], 'b', "array[1]"); //should return error!
+	expectValue(array.length, 1, "array.length");
 
 	// 3) pop again, then check as before
-	//...
+	expectValue(array.pop(), 'a', "array.pop()");
+	expectValue(array[0], undefined, "array[0]");
+	expectValue(array.length, 0, "array.length");
 
 	// 4) array should now be empty!  check an attempt to pop when empty
-	//...
+	expectValue(array.pop(), undefined, "array.pop()");
+	expectValue(array[undefined], undefined, "array[undefined]");
 }
 
 function testJoin(array) {
@@ -65,10 +71,18 @@ function testJoin(array) {
 
 	// 1) try a join on the empty array,
 	//  then check the return value and its status (which should be unchanged)
-	//...
+	expectValue(array.join(''), '', "array.join('')");
+	expectValue(array[undefined], undefined, "array[undefined]");
+	expectValue(array.length, 0, "array.length");
 
 	// 2) push 'a', then join and check as before
-	//...
+	expectValue(array.push('a'), 1, "array.push('a')");
+	expectValue(array[0], 'a', "array[0]"); 
+	expectValue(array.length, 1, "array.length");
+	
+	expectValue(array.join('a'), 'a', "array.join('a')");
+	expectValue(array[0], 'a', "array[0]");
+	expectValue(array.length, 1, "array.length");
 
 	// 3) push 'b', then join and check as before
 	//...
