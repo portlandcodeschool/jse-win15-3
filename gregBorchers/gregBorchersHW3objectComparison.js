@@ -44,6 +44,10 @@ var equal = function(obj1, obj2) {
     obj1Props.sort();
     obj2Props.sort();
 
+    if ( obj1Props.length === 0 || obj2Props.length === 0 ) {
+    	equalityTest = false;
+    }
+
     for ( var i = 0; i < obj1Props.length; i++){
 			if (obj1Props[i] !== obj2Props[i]){
 	        	equalityTest = false;  // test for property name
@@ -61,32 +65,50 @@ var equal = function(obj1, obj2) {
 var similar = function(obj1, obj2) {
     var similarityTest = true;
 
-    for (var i in obj1) {
-        var obj1Keys = Object.keys(obj1[i]);
-        var obj2Keys = Object.keys(obj2[i]);
-
-        obj1Keys.sort();
-        obj2Keys.sort();
-
-        if (obj1Keys != obj2Keys){
+    for (var testObj in obj1) {
+        if (!(testObj in obj1)){
         	similarityTest = false;
+        	return similarityTest; // RETURN on first failure
         };
     };
-    return similarityTest;
+    for (var testObj in obj2) {
+        if (!(testObj in obj1)){
+        	similarityTest = false;
+        	return similarityTest; // RETURN on first failure
+        };
+    };
+    return similarityTest;  // RETURN similarity true, if no mismatch is found
 };
 
 // *Union*: The union of objects A,B is a new object which contains all the properties found in either A or B.  
 // If a property is found in both, the merged property gets the shared key and the value `(A[key] || B[key])`.
 // For example: the union of `{a:1,b:0}` and `{a:0,c:0}` is `{a:1,b:0,c:0}`.
+//
+// strategy here is based on fundemental assumption
+// the Union(A,B) operation can be composed into sub operations
+// subtract(A,B) + intersection(A,B) + subtract(B-A) ----> yields the union of sets A and B
+//
+
 var union = function(obj1,obj2){
 	// iterate and compare building the new object
-	var objUnionTemp = {}; // temp var for holding the result
+	var objUnionTemp = {}; // temp object for holding the result
 
-	objUnionTemp += subtract(obj1,obj2);
-	objUnionTemp += subtract(obj2,obj1);
-	objUnionTemp += intersect(obj1,obj2);
+	// temp collections for each result
+	console.log("test obj1 contains: " + Object.keys(obj1));
+	console.log("test obj2 contains: " + Object.keys(obj2));
 
-   	return objUnionTemp;
+
+	var objUnionTemp1 = subtract(obj1,obj2);
+	console.log("obj1 - obj2 results in " + Object.keys(objUnionTemp1));
+
+	var objUnionTemp2 = subtract(obj2,obj1);
+	console.log("obj2 - obj1 results in " + Object.keys(objUnionTemp2));
+
+	var objUnionTemp3 = intersect_O_Rama_WithOps(obj1,obj2,"OR");  // required a special intersection to meet requirements above
+	console.log("intersection of (obj1,obj2) results in " + Object.keys(objUnionTemp3));
+
+	//TODO fix whatever my problem is here so I can concatenate these three object collections
+   	return Object.keys(objUnionTemp1) + Object.keys(objUnionTemp2) + "," + Object.keys(objUnionTemp3);
 };
 
 
@@ -95,19 +117,15 @@ var union = function(obj1,obj2){
 // For example, the intersection of `{a:1,b:0}` and `{a:0,c:0}` is `{a:0}`.
 var intersect = function(objA,objB){
 
-	var objMergeTarget = {};
+	var objMergeTarget = {};  // the return set
+
 	for (var i in objA) {
-     	var found = false;
-     	for (var j in objB){
-     		if (objA[i] == objB[j]) { // found in both
-             	found = true;
+     	if (objA[i] in objB) { // IN objA and objB
+             	objMergeTarget[i] = ([objA[i]] && [objB[i]]);  //in BOTH, so we put it into the return set
 	     	};
-	     	if (found) { 
-	     		objMergeTarget += objA[i];
-	     	};
-	     }
-     return objMergeTarget;
-	};
+	     };
+	return objMergeTarget;
+
 };
 
 
@@ -118,22 +136,80 @@ var subtract = function(objA,objB){
 	var objMergeTarget = {};
 
 	for (var i in objA) {
-     	var inTarget = true;
-     	for (var j in objB){
-     		if (objA[i] == objB[j]) { // IN objA and objB so don't add it to the Target
-             	inTarget = false;
+     	if (!(objA[i] in objB)) { // IN objA and NOT objB so don't add it to the Target
+             	objMergeTarget[i] = [objA[i]];  //Only in ObjA, so we put it into the return set
 	     	};
-	     	if (inTarget) { 
-	     		objMergeTarget += objA[i];  //TODO check this logic
-     		};
-     
-		};
-	};
+	     };
 	return objMergeTarget;
 };
 
+// this is a function to provide a tailored intersection operation
+// "intersect + Ops"  intersectionOps( objA, objB, iOp)
+// objA, objB .... duh
+// iOp ... this is either 'AND' or 'OR' or "NA" and drives what is returned
+var intersect_O_Rama_WithOps = function(objA,objB,iOp){
+
+	var objMergeTarget = {};  // the return set
+
+	for (var i in objA) {
+     	if (objA[i] in objB) { // IN objA and objB
+     			switch (iOp) {
+     				case "AND":
+        				objMergeTarget[i] = ([objA[i]] && [objB[i]]);
+        				break;
+    				case "OR":
+        				objMergeTarget[i] = ([objA[i]] || [objB[i]]);
+        				break;
+    				case "NA":
+        				objMergeTarget[i] = [objA[i]];
+        				break;
+      			    default:
+      			    	objMergeTarget[i] = "HW3_ERROR";
+        	        	break;
+        	    };    			
+	     	};
+	     };
+	return objMergeTarget;
+
+};
+
+
 
 // Tests
+
+var myTestObject1 = {'Larry':'Larry'  	// Larry, Greg and Moe are in both test objects
+					,'Greg':'Greg'
+					,'Moe':'Moe'
+					,'John':'John'      // John and Kurly are only in obj1
+					,'Kurly':'Kurly'};
+
+var myTestObject2 = {'Larry':'Larry'
+					,'Greg':'Greg'
+					,'Moe':'Moe'
+					,'Jack':'Jack'		// Jack and Joe are only in obj2
+					,'Joe':'Joe'};
+
+
+var myObjectCopy = {};
+
+myObjectCopy = copy(myTestObject1);
+console.log("should be same: lvalue=" + Object.keys(myObjectCopy) + " rvalue = " + Object.keys(myTestObject1));
+
+myTestObject2 = {};
+var equalityTest = equal(myTestObject2,myObjectCopy);
+console.log("should fail " + equalityTest);
+
+var equalityTest = equal(myTestObject1,myObjectCopy);
+console.log("should pass " + equalityTest);
+
+var similarityTest = "didNotRun";
+var similarityTest = similar(myTestObject1,myObjectCopy);
+console.log("should pass " + similarityTest);
+
+var similarityTest = 'didNotRun';
+myObjectCopy = {'sasauatch':'sasquatch'};
+var similarityTest = similar(myTestObject1,myObjectCopy);
+console.log("should fail " + similarityTest);
 
 var myTestObject1 = {'Larry':'Larry'
 					,'Greg':'Greg'
@@ -148,27 +224,9 @@ var myTestObject2 = {'Larry':'Larry'
 					,'Joe':'Joe'};
 
 
-var myObjectCopy = {};
-
-myObjectCopy = copy(myTestObject1);
-console.log("should be same: lvalue=" + myObjectCopy + " rvalue = " + myTestObject1);
-
-myTestObject2 = {};
-var equalityTest = equal(myTestObject2,myObjectCopy);
-console.log("should fail" + equalityTest);
-
-var equalityTest = equal(myTestObject1,myObjectCopy);
-console.log("should pass" + equalityTest);
-
-var similarityTest = myTestObject1;
-var similarityTest = similar(myTestObject1,myObjectCopy);
-console.log("should pass" + similarityTest);
-
-var similarityTest = {};
-var similarityTest = similar(myTestObject1,myObjectCopy);
-console.log("should fail" + similarityTest);
-
-myObjectCopy = union(myTestObject1, myTestObject2);
+var unionArray = [];
+unionArray = union(myTestObject1, myTestObject2);
+console.log("union of (obj1,obj2,obj3) results in " + unionArray);
 
 // TODO more tests
 
