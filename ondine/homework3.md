@@ -61,9 +61,6 @@ var cardTools = {
 **b)** Now that you have a testing suite, implement your own version of Arrays!
 
 
-
-
-
 ---
 
 **3)  Object Comparison** _[Moderate, 30%]_
@@ -133,12 +130,30 @@ return true;
 
 **b)**
 
+```
+var A = {a:0, b:0, c:0};
+var B = {b:0, c:0};
+
+function intersect(objA, objB) {
+  var obj = {}
+  var lengthA = Object.keys(objA).length;
+  var lengthB = Object.keys(objB).length;
+  var shortObj = (lengthA < lengthB)? objA : objB;
+  var longObj = (lengthA < lengthB)? objB : objA;
+  for(var key in shortObj) {
+    if (key in longObj) {
+      obj[key] = (objA[key] && objB[key]);
+    }
+  }
+return obj;
+}
+```
+
+//Can not get union to work.
 
 **c)**
 
 **d)**
-
-
 
 
 **4) Social network!** _[40% total]_
