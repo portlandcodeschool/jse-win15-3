@@ -8,8 +8,6 @@ var people = {};
 
 people.index = {};
 
-
-
 //each property here will be named after a person
 //and hold a reference to an object representing that person.
 
@@ -37,28 +35,30 @@ people.meet = function(nameA,nameB) { // returns a number
 		people.index[nameB] = {[nameB]:nameB};    //works adds people
 	}
 
-	// if not a friend, add B as a friend to A
+	// if not already a friend, add B as a friend to A
 	if (!(nameB in people.index[nameA])){
-		people.index[nameA][nameB] = {[nameB]:1};        // adding friends  only adds one friend
+		people.index[nameA][nameB] = {[nameB]:1};        // adding friends with only one meeting
 	}
-	else {  // nameB is already a friend, so increment the count
+	else {  // nameB is already a friend, so increment the count of meetings
 		people.index[nameA][nameB][nameB]++;
 		
 	}
 
-	// if not a friend, add A as a friend to B
+	// if not already a friend, add A as a friend to B
 	if (!(nameA in people.index[nameB]))
 	{
-		people.index[nameB][nameA] = {[nameA]:1};        // adding friends  only adds one friend
-	} else { //name A is already a friend, so increment the count
+		people.index[nameB][nameA] = {[nameA]:1};        // adding friends with only one meeting
+	} else { //name A is already a friend, so increment the count of meetings
 		people.index[nameB][nameA][nameA]++;
 	}
 
 	//TODO refactor these two cases into a smaller function or two.
-	return 1; // decide what to return
+	return people.index[nameB][nameA][nameA]; // return only one count, since they are identical.
 };
 
-// TESTING up to here
+
+// TESTING for haveMet(nameA,nameB)
+// basically, have a bunch of meetings and see if anyone remembers they went to them.... real life testing
 
 people.meet('larry','moe');
 console.log(Object.keys(people.index));
@@ -96,9 +96,6 @@ console.log(Object.keys(people.index));
 
 
 
-
-
-
 // * `people.haveMet(nameA,nameB)` should return a number greater than 0 if those people have met, and
 // * `some falseish value if they haven't or don't exist.
 people.haveMet = function(nameA,nameB) { //returns a number or falsish
@@ -109,8 +106,8 @@ people.haveMet = function(nameA,nameB) { //returns a number or falsish
 	return meetingCount;
 };
 
-//TESTING  haveMet
-// frank and jack should have met 6 times, frik and frak have met once
+//TESTING  haveMet(nameA,nameB)
+// frank and jack should have met 6 times, frik and frak have met once (based on testing above)
 var frankJackCount = people.haveMet('frank','jack');
 console.log('frank and jack meeting count is ' + frankJackCount);
 var frikFrakCount = people.haveMet('frik','frak');
@@ -122,22 +119,23 @@ console.log('frik and frak meeting count is ' + frikFrakCount);
 // * `met at least once (or undefined if `name` doesn't exist).   List the names in alphabetical order,
 // * `and make sure each name appears only once.
 people.friendsOf = function(name) { //returns a string
-	var friendsList = [""];
+	var friendsList = [];
 	if ( name in people.index){
 		for ( var friend in people.index[name]) {
-			friendsList.push(friend);	// TODO - FIX THIS SO THAT 'friend of self' IS NOT ADDED		
+			friendsList.push(friend);	// TODO - FIX THIS LOGIC SO THAT 'friend of self' does not need hack below		
 		}
 	}
-	return friendsList.join(", ");
+	friendsList.splice(friendsList.indexOf(name),1); // hack out the "friend of self" condition
+	return friendsList;
 };
 
-// TESTING friendsOf
-// frank and jack are friends
+// TESTING friendsOf(name)
+// frank and jack are friends (from previous testing)
 // frik and frak are friends
-console.log("jack friends are" + people.friendsOf("jack"));
-console.log("frank friends are" + people.friendsOf("frank"));
-console.log("frik friends are" + people.friendsOf("frik"));
-console.log("frak friends are" + people.friendsOf("frak"));
+console.log("jack friends are " + people.friendsOf("jack"));
+console.log("frank friends are " + people.friendsOf("frank"));
+console.log("frik friends are " + people.friendsOf("frik"));
+console.log("frak friends are " + people.friendsOf("frak"));
 
 
 // Write another method `people.friendsOfFriendsOf(name)` which returns a string listing, in
@@ -146,44 +144,71 @@ console.log("frak friends are" + people.friendsOf("frak"));
 // duplicates: any person should be listed only once regardless of the number of connections with
 // `name`.
 // (_Hint:_ the union of sets includes no duplicates!  Perhaps you could recycle code from somewhere?)
-people.friendsOfFriendsOf = function(name) { //returns a string
-	var twoDegreesList = [""];  // two degrees list
-
-	// firstPerson = name 
-	var firstPerson = name;
+people.friendsOfFriendsOf = function(firstPerson) { //returns a string
+	var twoDegreesList = [];  // friends within two degrees list
 
 	// get friends list of first person
-	var firstPersonFriendsList = [""];
+	var firstPersonFriendsList = [];
 	for (var secondPerson in people.index[firstPerson]){
 		if ( people.haveMet(firstPerson, secondPerson)) {
-			firstPersonFriendsList.push(secondPerson);
-		}
-			
+			firstPersonFriendsList.push(secondPerson); 
+		}		
 	}
-	twoDegreesList.join(",", firstPersonFriendsList);
+	twoDegreesList = deDupCat(firstPersonFriendsList, twoDegreesList); // needed a "special" helper... the deDupCat 
 
-	//for each person in friends list build their friends into the list
+	var tempArray = [];
+	//for each person in friends list build their "friends of the friend" into the twoDegrees list
 	for (var i =0; i < firstPersonFriendsList.length; i++ ){
-		twoDegreesList.join(",", people.friendsOf(firstPersonFriendsList[i]));
-			
+		tempArray = (people.friendsOf(firstPersonFriendsList[i]));
+		twoDegreesList = deDupCat(twoDegreesList, tempArray);
+		tempArray = [];
 	}
-
-
-	return firstPersonFriendsList.sort();  //TODO finish this to grab the second order friends
-	// return twoDegreesList.sort();
-
+	twoDegreesList.splice(twoDegreesList.indexOf(firstPerson),1); // hack out the "friend of self" condition
+	return twoDegreesList.sort();  	
 };
 
 
-// TESTING
-var jackFriends2ndList = people.friendsOfFriendsOf('jack');
-console.log(jackFriends2ndList);
+/// this sucks
+// I am writing a deDupCat(array1, array2) routine because I cannot seem to get 
+// conventional array concat and/or push routines to do what I want.....
+// I promise to attend "coders of uneeded routines anonymous meeting" if I cannot fix this.
+
+var deDupCat = function( array1, array2 ) {
+
+	// a little defensive error checking to prevent endless loops below
+	if ( !(Array.isArray(array1)) || !(Array.isArray(array1)) ) {
+		// throws some error (in future)
+		return;  // no soup-DeDupCat for you..
+		//a bad person called this with a non-array type (yes... a very bad person, they are mean)
+	}
+
+	var returnArray = [];  // an array to hold the return value as we build it up
+
+	returnArray = array1.concat(array2);  // make a pile there
+
+	// remove duplicates
+	for ( var i = 0; i < returnArray.length; i++ ) {
+
+		while ( (returnArray.indexOf(returnArray[i]) !== i)     // keeps yanking duplicate items until only one left
+			  &&(returnArray.indexOf(returnArray[i]) !== -1)) 	// special case for going off the (now shortened) end
+		{
+			returnArray.splice(i,1);
+		}
+	}
+	return returnArray;
+};
 
 
+// TESTING for printing the second order friends list
 
-	// if friend hasmet somebody in people list
-		// add friend from people list to twoDegrees list
+var testFriendsList = ["frank", "jack", "jack2", "jack3", "jon", "larry", "moe", "zack"];
 
-	// sort list
+for ( var i = 0; i < testFriendsList.length; i++ ){
+	console.log("<<<<<<<");
+	var jackFriends2ndList = people.friendsOfFriendsOf(testFriendsList[i]);
+	console.log("the first and second order friends of " + testFriendsList[i] + ", are as follows: ")
+	console.log(jackFriends2ndList);
+	console.log(">>>>>>>");
+};
 
 
