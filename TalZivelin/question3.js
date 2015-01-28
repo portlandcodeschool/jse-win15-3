@@ -135,3 +135,25 @@ function subtract(objA,objB){
 }
 
 subtract(objA,objB)
+
+
+// 3.c assertions
+
+function expectValue(result, expected, attemptStr) {
+	if (result !== expected) {
+		console.log(attemptStr+" expected result "+expected+", got "+result);
+	}
+}
+	var ojb = {};
+	var objA = {a:1, b:2, c:3, d:5}
+	var objB = {a:0, b:1, d:2, e:9, g:5};	
+	
+	//UNION CHECK
+	expectValue(union(objA,objB), {a:1,b:1,d:2, g:5}, "expected {a:1,b:1,d:2, g:5}"); //check return value
+
+	// I'm not sure what I'm doing wrong here.
+
+
+// 3.d symmetry
+
+// These are not simetrical since the results will be determined by which of the arrays is compared to the other array. The order of the arrays will determine the results. The results are either && or || which would be different depending which array propery comes before the other one.
