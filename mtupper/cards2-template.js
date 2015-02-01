@@ -6,20 +6,17 @@ var cardTools = { // a toolbox object used to group related methods
 	// properties (methods) of the toolbox object:
 	rank: function(id) {
 		this.numCheck(id);
-		var r = Math.floor(id / 4) + 1;
-		return r;
+		return Math.floor(id / 4) + 1;
 	},
 
 	suit: function(id) {
 		this.numCheck(id);
-		var s = (id % 4) + 1;
-		return s;
+		return (id % 4) + 1;
 	},
 
 	cardID: function(rank,suit) {
 		this.cardCheck(rank, suit);
-		var cid = (rank * 4) - (5 - suit);
-		return cid;
+		return (rank * 4) - (5 - suit);
 	},
 
 	color: function(id) {
