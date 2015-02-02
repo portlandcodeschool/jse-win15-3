@@ -66,6 +66,19 @@ people.friendsOf = function(name) { //returns a string
     return friendsList.sort().join('\n');
 };
 
+people.friendsOfFriendsOf = function(name) {
+    var firstDegree = this.friendsOf(name).split('\n');
+    for (var i = 0; i < firstDegree.length; i++) {
+        var secondDegree = this.friendOf(firstDegree[i]).split('\n');
+        for (var f = 0; f < secondDegree.length; f++) {
+            if (firstDegree[secondDegree[f]] === undefined) {
+                firstDegree.push(secondDegree[f]);
+            }
+        }
+    }
+    return firstDegree.sort().join('\n');
+};
+
 people.addPeople = function(nameA,nameB) {
     people.index[nameA] = {
         'name': nameA,
@@ -86,17 +99,4 @@ people.addPerson = function(nameA,nameB) {
     };
     people.index[nameA].friends[nameB] = 1;
     people.index[nameB].friends[nameA] = 1;
-};
-
-people.friendsOfFriendsOf = function(name) {
-    var firstDegree = this.friendsOf(name).split('\n');
-    for (var i = 0; i < firstDegree.length; i++) {
-        var secondDegree = this.friendsOf(firstDegree[i]).split('\n');
-        for (var f = 0; f < secondDegree.length; f++) {
-            if (firstDegree[secondDegree[f]] === undefined) {
-                firstDegree.push(secondDegree[f]);
-            }
-        }
-    }
-    return firstDegree.sort().join('\n');
 };

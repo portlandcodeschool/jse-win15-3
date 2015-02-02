@@ -3,7 +3,7 @@
  */
 
 function copy(obj) {
-    if (typeof obj != 'object') {return undefined}
+    if (typeof obj != 'object') return undefined;
     var newObj = {};
     for (var prop in obj) {
         newObj[prop] = obj[prop];
@@ -12,7 +12,7 @@ function copy(obj) {
 }
 
 function equal(objA, objB) {
-    if (typeof objA != 'object' || typeof objB != 'object') {return undefined}
+    if (typeof objA != 'object' || typeof objB != 'object') return undefined;
     if (objA == null && objB == null) { return true;}
     for (var prop in objA) {
         if (objA.hasOwnProperty(prop) != objB.hasOwnProperty(prop)) {
@@ -26,7 +26,7 @@ function equal(objA, objB) {
 }
 
 function similar(objA, objB) {
-    if (typeof objA != 'object' || typeof objB != 'object') {return undefined}
+    if (typeof objA != 'object' || typeof objB != 'object') return undefined;
     for (var prop in objA) {
         if (objA.hasOwnProperty(prop) != objB.hasOwnProperty(prop)) {
             return false;
@@ -36,7 +36,7 @@ function similar(objA, objB) {
 }
 
 function union(objA, objB) {
-    if (typeof objA != 'object' || typeof objB != 'object') {return undefined}
+    if (typeof objA != 'object' || typeof objB != 'object') return undefined;
     var newObj = {};
     for (var prop in objA) {
         newObj[prop] = objA[prop];
@@ -53,7 +53,7 @@ function union(objA, objB) {
 }
 
 function intersect(objA, objB) {
-    if (typeof objA != 'object' || typeof objB != 'object') {return undefined}
+    if (typeof objA != 'object' || typeof objB != 'object') return undefined;
     var newObj = {};
     for (var prop in objA) {
         if (objB.hasOwnProperty(prop)) {
@@ -64,7 +64,7 @@ function intersect(objA, objB) {
 }
 
 function subtract(objA, objB) {
-    if (typeof objA != 'object' || typeof objB != 'object') {return undefined}
+    if (typeof objA != 'object' || typeof objB != 'object') return undefined;
     var newObj = {};
     for (var prop in objA) {
         if (!objB.hasOwnProperty(prop)) {
